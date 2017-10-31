@@ -9,7 +9,7 @@ local plugin = require("kong.plugins.base_plugin"):extend()
 
 -- constructor
 function plugin:new()
-  plugin.super.new(self, "myPlugin") --TODO: change "myPlugin" to the name of the plugin here
+  plugin.super.new(self, "Shepherd") --TODO: change "Shepherd" to the name of the plugin here
 
   -- do initialization here, runs in the 'init_by_lua_block', before worker processes are forked
 end
