@@ -1,5 +1,5 @@
-local plugin = require("kong.plugins.base_plugin"):extend()
-local basePath = (...):match("(.-)[^%.]+$") -- returns 'Shepherd Base'
+local shepherd = require("kong.plugins.base_plugin"):extend()
+local basePath = (...):match("(.-)[^%.]+$") -- returns 'shepherd Base'
 local config = require(basePath .. 'config')
 local migrate = require(basePath .. 'migrate')
 
@@ -8,15 +8,15 @@ local inspect = require('inspect')
 req_header = nil;
 
 -- Only For Instantiate
-function plugin:new()
-  plugin.super.new(self, 'Shepherd')
+function shepherd:new()
+  shepherd.super.new(self, 'shepherd')
 end
 
 
-function plugin:init_worker()
-  plugin.super.access(self)
+function shepherd:init_worker()
+  shepherd.super.access(self)
   config:fetch()
-  migrate:proceed()
+  migrate:execute()
 end
 
 
@@ -25,19 +25,20 @@ local function get_headers(header)
 end
 
 
-function plugin:access()
-  plugin.super.access(self)
+function shepherd:access()
+  shepherd.super.access(self)
   get_headers(ngx.req.get_headers())
   if req_header['version'] then
     ngx.redirect("http://auth.dbrainscience.io")
   end
 end
 
-function plugin:header_filter(plugin_conf)
-  plugin.super.access(self)
+function shepherd:header_filter(plugin_conf)
+  shepherd.super.access(self)
 end
 
 -- For Priority Upper than Req/Resp-Transformer
-plugin.PRIORITY = 850
+shepherd.PRIORITY = 850
+shepherd.VERSION = "0.1.0"
 
-return plugin
+return shepherd
