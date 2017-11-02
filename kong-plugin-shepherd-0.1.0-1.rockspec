@@ -1,4 +1,4 @@
-package = "kong-plugin-Shepherd"  -- TODO: rename, must match the info in the filename of this rockspec!
+package = "kong-plugin-shepherd"  -- TODO: rename, must match the info in the filename of this rockspec!
                                   -- as a convention; stick to the prefix: `kong-plugin-`
 version = "0.1.0-1"               -- TODO: renumber, must match the info in the filename of this rockspec!
 -- The version '0.1.0' is the source code version, the trailing '1' is the version of this rockspec.
@@ -21,7 +21,7 @@ description = {
 dependencies = {
 }
 
-local pluginName = "Shepherd"  -- TODO: rename. This is the name to set in the Kong configuration `custom_plugins` setting.
+local pluginName = "shepherd"  -- TODO: rename. This is the name to set in the Kong configuration `custom_plugins` setting.
 build = {
   type = "builtin",
   modules = {

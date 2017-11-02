@@ -1,6 +1,6 @@
 return {
   {
-    name = "2017-11-01-172400_init_shepherd",
+    name = "2016-11-01-172400_init_shepherd",
     up = [[
       CREATE TABLE IF NOT EXISTS shepherd
       (

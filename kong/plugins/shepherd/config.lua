@@ -1,4 +1,5 @@
 local singletons = require "kong.singletons"
+local inspect = require('inspect')
 
 local config = {}
 config.entry = nil
@@ -12,8 +13,13 @@ function config.fetch()
   end
   -- TODO: Error Handling
 
-  config.entry = plugins[1]['config']
-  return config.entry
+  if next(plugins) ~= nil then
+    config.entry = plugins[1]['config']
+    return config.entry
+  else
+    ngx.log(ngx.ERR, "NOT FOUND! Try Migration AGAIN!", err)
+  end
+
 end
 
 return config

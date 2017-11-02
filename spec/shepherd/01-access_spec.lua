@@ -1,6 +1,6 @@
 local helpers = require "spec.helpers"
 
-describe("Demo-Plugin: Shepherd (access)", function()
+describe("Demo-Plugin: shepherd (access)", function()
   local client
 
   setup(function()
@@ -12,12 +12,12 @@ describe("Demo-Plugin: Shepherd (access)", function()
 
     assert(helpers.dao.plugins:insert {
       api_id = api1.id,
-      name = "Shepherd",
+      name = "shepherd",
     })
 
     -- start kong, while setting the config item `custom_plugins` to make sure our
     -- plugin gets loaded
-    assert(helpers.start_kong { custom_plugins = "Shepherd" })
+    assert(helpers.start_kong { custom_plugins = "shepherd" })
   end)
 
   teardown(function()
