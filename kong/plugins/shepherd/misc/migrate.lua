@@ -1,5 +1,5 @@
-local basePath = (...):match("(.-)[^%.]+$") -- returns 'shepherd Base'
-local config = require(basePath .. 'config')
+local pluginBase = 'kong.plugins.shepherd'
+local config = require(pluginBase .. '.misc.config')
 
 local migrate = {}
 

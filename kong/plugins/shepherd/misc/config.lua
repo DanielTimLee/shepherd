@@ -19,7 +19,6 @@ function config.fetch()
   else
     ngx.log(ngx.ERR, "NOT FOUND! Try Migration AGAIN!", err)
   end
-
 end
 
 return config

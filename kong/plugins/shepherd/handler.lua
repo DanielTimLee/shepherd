@@ -1,16 +1,16 @@
 local shepherd = require("kong.plugins.base_plugin"):extend()
-local basePath = (...):match("(.-)[^%.]+$") -- returns 'shepherd Base'
-local config = require(basePath .. 'config')
-local migrate = require(basePath .. 'migrate')
+
+local pluginBase = 'kong.plugins.shepherd'
+local config = require(pluginBase .. '.misc.config')
+local migrate = require(pluginBase .. '.misc.migrate')
 
 local inspect = require('inspect')
 
 req_header = nil;
-doIcallLater = 0;
+
 -- Only For Instantiate
 function shepherd:new()
   shepherd.super.new(self, 'shepherd')
-  doIcallLater = doIcallLater + 1;
 end
 
 
@@ -18,10 +18,7 @@ function shepherd:init_worker()
   shepherd.super.access(self)
   config:fetch()
   migrate:execute()
-  ngx.log(ngx.CRIT, "DDDDDDDDDDDDDDDDOOOOOOOOOOOOOOOOOOOOIIIIIIIIIIIIIIIICCCCCCCCCCCCCCAAAAAAAAAAAAAAALLLLLLL")
-  ngx.log(ngx.CRIT, doIcallLater)
-  ngx.log(ngx.CRIT, "DDDDDDDDDDDDDDDDOOOOOOOOOOOOOOOOOOOOIIIIIIIIIIIIIIIICCCCCCCCCCCCCCAAAAAAAAAAAAAAALLLLLLL")
-  doIcallLater = doIcallLater + 1;
+  ngx.log(ngx.CRIT, "Hello Shepherd Worker!")
 end
 
 
