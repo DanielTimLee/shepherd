@@ -8,6 +8,7 @@ local SCHEMA = {
     endpoint = { type = "string", required = true },
     module = { type = "string", required = true },
     module_version = { type = "string", required = true },
+    is_active = { type = "boolean", default = true, required = true },
     created_date = { type = "timestamp", immutable = true, required = true, dao_insert_value = true },
     updated_date = { type = "timestamp", required = true, dao_insert_value = true },
   }
