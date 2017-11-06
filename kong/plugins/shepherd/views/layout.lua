@@ -2,6 +2,7 @@ local html = require("lapis.html")
 local cdnICON = 'https://fonts.googleapis.com/icon?family=Material+Icons'
 local cdnCSS = 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css'
 local cdnJS = 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js'
+local jqJS = 'https://code.jquery.com/jquery-3.2.1.min.js'
 local Layout
 do
   local _class_0
@@ -10,63 +11,113 @@ do
     content = function(self)
       return html_5(function()
         head(function()
-          link({
-            rel = "stylesheet",
-            href = cdnICON
+          script({
+            src = jqJS
           })
+          script({
+            src = cdnJS
+          })
+          title("Shepherd Dashboard")
           link({
             rel = "stylesheet",
             href = cdnCSS
           })
-          title("Shepherd Dashboard")
-          return script({
-            src = cdnJS
+          link({
+            rel = "stylesheet",
+            href = cdnICON
           })
+          return raw([[ <style> body{display:flex;min-height:100vh;flex-direction:column}main{flex:1 0 auto} </style> ]])
         end)
         return body(function()
-          nav({
-            role = "navigation"
-          }, function()
-            return div({
-              class = "nav-wrapper container"
+          header(function()
+            return nav({
+              role = "navigation"
             }, function()
-              return a({
-                class = "brand-logo",
-                href = "#"
-              }, function()
-                return text("Shepherd Dashboard")
-              end)
-            end)
-          end)
-          div({
-            class = "section no-pad-bot"
-          }, function()
-            return div({
-              class = "container"
-            }, function()
-              element("p")
-              h1({
-                class = "header center light-blue-text text-lighten-1"
-              }, "Shepherd")
-              div({
-                class = "row center"
-              }, function()
-                return h5({
-                  class = "header col s12 light"
-                }, "Client Versioning to Redirect API Endpoint, Modules")
-              end)
-              div({
-                class = "row center"
+              return div({
+                class = "nav-wrapper container"
               }, function()
                 return a({
-                  class = "btn-large waves-effect waves-light light-blue lighten-1",
+                  class = "brand-logo",
                   href = "#"
-                }, "Add New API")
+                }, function()
+                  return text("Shepherd Dashboard")
+                end)
               end)
-              return p
             end)
           end)
-          return self:content_for("inner")
+          main(function()
+            div({
+              class = "section no-pad-bot"
+            }, function()
+              return div({
+                class = "container"
+              }, function()
+                h1({
+                  class = "header center light-blue-text text-lighten-1"
+                }, "Shepherd")
+                return div({
+                  class = "row center"
+                }, function()
+                  return h5({
+                    class = "header col s12 light"
+                  }, "Client Versioning Redirect with API Endpoint, Modules")
+                end)
+              end)
+            end)
+            self:content_for("inner")
+            div({
+              class = "section"
+            })
+            return div({
+              class = "section"
+            })
+          end)
+          return footer({
+            class = "page-footer"
+          }, function()
+            div({
+              class = "container"
+            }, function()
+              return div({
+                class = "row"
+              }, function()
+                div({
+                  class = "col l6 s12"
+                }, function()
+                  h5({
+                    class = "white-text"
+                  }, "Shepherd Plugin")
+                  return p({
+                    class = "gray-text text-lighten-4"
+                  }, "Plugin for Client Versioning and Redirect with API Endpoint, Modules")
+                end)
+                return div({
+                  class = "col l4 offset-l2 s12"
+                }, function()
+                  h5({
+                    class = "white-text"
+                  }, "Links")
+                  return ul(function()
+                    return li(function()
+                      return a({
+                        class = "grey-text text-lighten-3",
+                        href = "dbrain.science"
+                      }, "dBrainScience Homepage")
+                    end)
+                  end)
+                end)
+              end)
+            end)
+            return div({
+              class = "footer-copyright"
+            }, function()
+              return div({
+                class = "container"
+              }, function()
+                return text("© 2017 Copyright dBrainScience")
+              end)
+            end)
+          end)
         end)
       end)
     end

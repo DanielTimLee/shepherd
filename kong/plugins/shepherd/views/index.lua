@@ -7,49 +7,244 @@ do
   local _base_0 = {
     content = function(self)
       return div({
-        class = "section no-pad-bot"
+        class = "section no-pad-top"
       }, function()
         return div({
           class = "container"
         }, function()
-          return element("table", {
-            class = "striped centered highlight"
+          raw([[ <style> #act-btn-box{position:relative;height:5rem}#act-btn{position:absolute;display:inline-block;right:2rem}#new-rule{display:none} </style> ]])
+          div({
+            id = "act-btn-box"
           }, function()
-            thead(function()
-              return tr(function()
-                th("Client Version")
-                th("API Endpoint")
-                th("API Module")
-                th("API Version")
-                return th("Action")
+            return div({
+              class = "fixed-action-btn horizontal click-to-toggle",
+              id = "act-btn"
+            }, function()
+              a({
+                class = "btn-floating btn-large pulse red"
+              }, function()
+                return i({
+                  class = "large material-icons"
+                }, "menu")
               end)
-            end)
-            return tbody(function()
-              return tr(function()
-                td("v1.0.1")
-                td("/kaiser/keyword")
-                td("KE")
-                td("v1")
-                return td(function()
-                  a({
-                    class = "waves-effect waves-light blue btn-floating"
+              return ul(function()
+                li(function()
+                  return a({
+                    class = "btn-floating blue",
+                    id = "add-rule"
+                  }, function()
+                    return i({
+                      class = "material-icons"
+                    }, "add")
+                  end)
+                end)
+                li(function()
+                  return a({
+                    class = "btn-floating green"
                   }, function()
                     return i({
                       class = "material-icons"
                     }, "edit")
                   end)
-                  local _ = br
+                end)
+                return li(function()
                   return a({
-                    class = "waves-effect waves-light red btn-floating"
+                    class = "btn-floating yellow darken-1"
                   }, function()
                     return i({
                       class = "material-icons"
-                    }, "remove_circle")
+                    }, "search")
                   end)
                 end)
               end)
             end)
           end)
+          div({
+            class = "row",
+            id = "new-rule"
+          }, function()
+            return form({
+              class = "col s12",
+              method = "POST"
+            }, function()
+              return div({
+                class = "row"
+              }, function()
+                div({
+                  class = "input-field col s3"
+                }, function()
+                  input({
+                    class = "validate",
+                    required = true,
+                    ["data-length"] = "10",
+                    name = "client_version",
+                    type = "text",
+                    placeholder = "v1.0.1"
+                  })
+                  return label({
+                    ["for"] = "client_version"
+                  }, "Client Version")
+                end)
+                div({
+                  class = "input-field col s3"
+                }, function()
+                  input({
+                    class = "validate",
+                    required = true,
+                    name = "endpoint",
+                    type = "text",
+                    placeholder = "/my-api/end"
+                  })
+                  return label({
+                    ["for"] = "endpoint"
+                  }, "API Endpoint")
+                end)
+                div({
+                  class = "input-field col s2"
+                }, function()
+                  input({
+                    class = "validate",
+                    required = true,
+                    name = "module",
+                    type = "text",
+                    placeholder = "KE"
+                  })
+                  return label({
+                    ["for"] = "module"
+                  }, "API Module")
+                end)
+                div({
+                  class = "input-field col s2"
+                }, function()
+                  input({
+                    class = "validate",
+                    required = true,
+                    ["data-length"] = "10",
+                    name = "module_version",
+                    type = "text",
+                    placeholder = "v1"
+                  })
+                  return label({
+                    ["for"] = "module_version"
+                  }, "Module Version")
+                end)
+                return div({
+                  class = "input-field col s2"
+                }, function()
+                  return button({
+                    class = "btn waves-effect waves-light",
+                    type = "submit"
+                  }, "submit")
+                end)
+              end)
+            end)
+          end)
+          element("table", {
+            class = "striped centered highlight"
+          }, function()
+            thead(function()
+              return tr(function()
+                th("Status")
+                th("Client Version")
+                th("API Endpoint")
+                th("API Module")
+                th("Module Version")
+                return th("Action")
+              end)
+            end)
+            return tbody(function()
+              for key, value in pairs(self.rules) do
+                tr({
+                  ["data-id"] = self.rules[key]['id']
+                }, function()
+                  td(function()
+                    return div({
+                      class = "switch"
+                    }, function()
+                      return label(function()
+                        input({
+                          id = "toggle-rule",
+                          type = "checkbox",
+                          checked = self.rules[key]['is_active']
+                        })
+                        return span({
+                          class = "lever"
+                        })
+                      end)
+                    end)
+                  end)
+                  td({
+                    id = "client_version"
+                  }, self.rules[key]['client_version'])
+                  td({
+                    id = "endpoint"
+                  }, self.rules[key]['endpoint'])
+                  td({
+                    id = "module"
+                  }, self.rules[key]['module'])
+                  td({
+                    id = "module_version"
+                  }, self.rules[key]['module_version'])
+                  return td(function()
+                    return div({
+                      class = "actions"
+                    }, function()
+                      button({
+                        class = "waves-effect waves-light cyan btn-floating"
+                      }, function()
+                        return i({
+                          class = "material-icons"
+                        }, "edit")
+                      end)
+                      return button({
+                        class = "waves-effect waves-light orange btn-floating",
+                        id = "delete-rule"
+                      }, function()
+                        return i({
+                          class = "material-icons"
+                        }, "remove_circle")
+                      end)
+                    end)
+                  end)
+                end)
+              end
+            end)
+          end)
+          return raw([[ <script>$(function() {
+          $('#client-version, #api-version').characterCounter();
+          $('#add-rule').on('click',function(){$('#new-rule').toggle();});
+
+          $('label #toggle-rule').on('click',function(){
+            ajaxReq('PUT', extractAttr($(this).parents('tr')));
+          });
+
+          $('.actions #delete-rule').on('click',function(){
+            ajaxReq('DELETE', extractAttr($(this).parents('tr')));
+          });
+
+          function ajaxReq(method, data, callback) {
+            $.ajax({
+              type: method,
+              data: JSON.stringify(data),
+              dataType: 'json',
+              success: callback,
+              success: function(res){alert(res['message']);location.reload();},
+              contentType: "application/json; charset=UTF-8"
+            });
+          }
+
+          function extractAttr(parent){
+            return {
+              id: parent.attr('data-id'),
+              client_version: parent.find('#client_version').text(),
+              endpoint: parent.find('#endpoint').text(),
+              module: parent.find('#module').text(),
+              module_version: parent.find('#module_version').text(),
+              is_active: parent.find('#toggle-rule').prop('checked'),
+            }
+          }
+
+        });</script> ]])
         end)
       end)
     end
