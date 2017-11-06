@@ -4,13 +4,14 @@ return {
     up = [[
       CREATE TABLE IF NOT EXISTS shepherd
       (
-          id SERIAL PRIMARY KEY NOT NULL,
+          id uuid,
           client_version TEXT,
           endpoint TEXT NOT NULL,
           module TEXT NOT NULL,
           module_version TEXT NOT NULL,
           created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          PRIMARY KEY (id)
       );
     ]],
     down = [[
