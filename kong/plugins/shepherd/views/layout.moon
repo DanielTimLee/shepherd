@@ -33,6 +33,13 @@ class Layout extends html.Widget
               div class: "row center", ->
                 h5 class: "header col s12 light", "Client Versioning Redirect with API Endpoint, Modules"
 
+              if @message
+                div class: "row center", ->
+                  div class: "container", ->
+                    div class: "blue lighten-5 card-panel", ->
+                      div class: "card-content", ->
+                        h5 @message
+
           @content_for "inner"
 
           div class: "section"

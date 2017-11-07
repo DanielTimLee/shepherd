@@ -42,12 +42,13 @@ local function navigate()
 
     if table.getn(rules) ~= 0 then
       local redirect_url = "/" .. rules[1]["module"] .. "/" .. rules[1]["module_version"] .. ngx.var.request_uri -- with param
+      ngx.log(ngx.ERR, redirect_url) -- log
       ngx.redirect(redirect_url)
+    else
+      navigate_error("No match rules found. Please Check your Rule registered status.")
     end
-
-    navigate_error("No match rules found. Please Check your Rule registered status.")
+    --else  navigate_error() -- Uncomment If want to block all the direct API request
   end
-  --  navigate_error() -- Uncomment If want to block all the direct API request
 end
 
 

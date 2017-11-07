@@ -55,13 +55,32 @@ do
                 h1({
                   class = "header center light-blue-text text-lighten-1"
                 }, "Shepherd")
-                return div({
+                div({
                   class = "row center"
                 }, function()
                   return h5({
                     class = "header col s12 light"
                   }, "Client Versioning Redirect with API Endpoint, Modules")
                 end)
+                if self.message then
+                  return div({
+                    class = "row center"
+                  }, function()
+                    return div({
+                      class = "container"
+                    }, function()
+                      return div({
+                        class = "blue lighten-5 card-panel"
+                      }, function()
+                        return div({
+                          class = "card-content"
+                        }, function()
+                          return h5(self.message)
+                        end)
+                      end)
+                    end)
+                  end)
+                end
               end)
             end)
             self:content_for("inner")

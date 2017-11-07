@@ -1,3 +1,5 @@
+local config = require("kong.plugins.shepherd.misc.config")
+
 local index = require("kong.plugins.shepherd.views.index")
 local layout = require("kong.plugins.shepherd.views.layout")
 local index_url = "/shepherd"
@@ -6,13 +8,17 @@ return {
   [index_url] = {
     GET = function(self, dao_factory)
       -- CRUD helper Returns all the way through by itself, so custom fetch from DAO.
-      local rules, err = dao_factory.daos.shepherd:find_all()
-      if err then
-        ngx.log(ngx.ERR, "err in Fetching Rule: ", err)
-      end
+      if config.status() == false then
+        self.message = "Plugin Status Unknown. Please Check Plugin Status."
+      else
+        local rules, err = dao_factory.daos.shepherd:find_all()
+        if err then
+          ngx.log(ngx.ERR, "err in Fetching Rule: ", err)
+        end
 
-      self.rules = rules
-      self.rules_len = table.getn(self.rules)
+        self.rules = rules
+        self.rules_len = table.getn(self.rules)
+      end
 
       return { render = index, layout = layout, content_type = "text/html" }
     end,
