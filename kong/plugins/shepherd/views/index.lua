@@ -1,5 +1,6 @@
 local Widget
 Widget = require("lapis.html").Widget
+local inp_css = 'validate no-mar-bot'
 local Index
 do
   local _class_0
@@ -12,7 +13,12 @@ do
         return div({
           class = "container"
         }, function()
-          raw([[ <style> #act-btn-box{position:relative;height:5rem}#act-btn{position:absolute;display:inline-block;right:2rem}#new-rule{display:none} </style> ]])
+          raw([[ <style>
+        .no-mar{margin:0px !important}.no-mar-top{margin-top:0px !important}.no-mar-bot{margin-bottom:0px !important}
+        .full-size-hor{width:100%}
+        #act-btn-box{position:relative;height:5rem}#act-btn{position:absolute;display:inline-block;right:2rem}
+        #new-rule{display:none}.modify-rule{display:none}
+        </style> ]])
           div({
             id = "act-btn-box"
           }, function()
@@ -60,7 +66,7 @@ do
             end)
           end)
           div({
-            class = "row",
+            class = "row no-mar",
             id = "new-rule"
           }, function()
             return form({
@@ -74,7 +80,7 @@ do
                   class = "input-field col s3"
                 }, function()
                   input({
-                    class = "validate",
+                    class = inp_css,
                     required = true,
                     ["data-length"] = "10",
                     name = "client_version",
@@ -89,7 +95,7 @@ do
                   class = "input-field col s3"
                 }, function()
                   input({
-                    class = "validate",
+                    class = inp_css,
                     required = true,
                     name = "endpoint",
                     type = "text",
@@ -103,7 +109,7 @@ do
                   class = "input-field col s2"
                 }, function()
                   input({
-                    class = "validate",
+                    class = inp_css,
                     required = true,
                     name = "module",
                     type = "text",
@@ -117,7 +123,7 @@ do
                   class = "input-field col s2"
                 }, function()
                   input({
-                    class = "validate",
+                    class = inp_css,
                     required = true,
                     ["data-length"] = "10",
                     name = "module_version",
@@ -132,7 +138,7 @@ do
                   class = "input-field col s2"
                 }, function()
                   return button({
-                    class = "btn waves-effect waves-light",
+                    class = "btn waves-effect waves-light full-size-hor",
                     type = "submit"
                   }, "submit")
                 end)
@@ -173,24 +179,87 @@ do
                       end)
                     end)
                   end)
-                  td({
-                    id = "client_version"
-                  }, self.rules[key]['client_version'])
-                  td({
-                    id = "endpoint"
-                  }, self.rules[key]['endpoint'])
-                  td({
-                    id = "module"
-                  }, self.rules[key]['module'])
-                  td({
-                    id = "module_version"
-                  }, self.rules[key]['module_version'])
-                  return td(function()
+                  td(function()
+                    span({
+                      id = "client_version",
+                      class = "active-rule"
+                    }, self.rules[key]['client_version'], function() end)
                     return div({
-                      class = "actions"
+                      class = "modify-rule no-mar-top input-field"
+                    }, function()
+                      return input({
+                        class = inp_css,
+                        required = true,
+                        ["data-length"] = "10",
+                        name = "client_version",
+                        type = "text",
+                        placeholder = "v1.0.1",
+                        value = self.rules[key]['client_version']
+                      })
+                    end)
+                  end)
+                  td(function()
+                    span({
+                      id = "endpoint",
+                      class = "active-rule"
+                    }, self.rules[key]['endpoint'], function() end)
+                    return div({
+                      class = "modify-rule no-mar-top input-field"
+                    }, function()
+                      return input({
+                        class = inp_css,
+                        required = true,
+                        name = "endpoint",
+                        type = "text",
+                        placeholder = "/my-api/end",
+                        value = self.rules[key]['endpoint']
+                      })
+                    end)
+                  end)
+                  td(function()
+                    span({
+                      id = "module",
+                      class = "active-rule"
+                    }, self.rules[key]['module'], function() end)
+                    return div({
+                      class = "modify-rule no-mar-top input-field"
+                    }, function()
+                      return input({
+                        class = inp_css,
+                        required = true,
+                        name = "module",
+                        type = "text",
+                        placeholder = "KE",
+                        value = self.rules[key]['module']
+                      })
+                    end)
+                  end)
+                  td(function()
+                    span({
+                      id = "module_version",
+                      class = "active-rule"
+                    }, self.rules[key]['module_version'], function() end)
+                    return div({
+                      class = "modify-rule no-mar-top input-field"
+                    }, function()
+                      return input({
+                        class = inp_css,
+                        required = true,
+                        ["data-length"] = "10",
+                        name = "module_version",
+                        type = "text",
+                        placeholder = "v1",
+                        value = self.rules[key]['module_version']
+                      })
+                    end)
+                  end)
+                  return td(function()
+                    div({
+                      class = "active-rule actions"
                     }, function()
                       button({
-                        class = "waves-effect waves-light cyan btn-floating"
+                        class = "waves-effect waves-light cyan btn-floating",
+                        id = "modify-toggle"
                       }, function()
                         return i({
                           class = "material-icons"
@@ -205,6 +274,14 @@ do
                         }, "remove_circle")
                       end)
                     end)
+                    return div({
+                      class = "modify-rule"
+                    }, function()
+                      return button({
+                        class = "btn waves-effect waves-light blue lighten-1",
+                        id = "modify-rule"
+                      }, "submit")
+                    end)
                   end)
                 end)
               end
@@ -218,9 +295,29 @@ do
             ajaxReq('PUT', extractAttr($(this).parents('tr')));
           });
 
+          $('.actions #modify-toggle').on('click',function(){
+            var parent = $(this).parents('tr')
+            parent.find('.modify-rule').toggle()
+            parent.find('.active-rule').toggle()
+          });
+
+          $('.modify-rule #modify-rule').on('click',function(){
+            var parent = $(this).parents('tr')
+            pushInput(parent,"client_version")
+            pushInput(parent,"endpoint")
+            pushInput(parent,"module")
+            pushInput(parent,"module_version")
+
+            ajaxReq('PUT', extractAttr($(this).parents('tr')));
+          });
+
           $('.actions #delete-rule').on('click',function(){
             ajaxReq('DELETE', extractAttr($(this).parents('tr')));
           });
+
+          function pushInput(parent, target) {
+            parent.find("#"+target).text(parent.find("input[name="+target+"]").val());
+          }
 
           function ajaxReq(method, data, callback) {
             $.ajax({
