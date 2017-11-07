@@ -1,16 +1,16 @@
 package = "kong-plugin-shepherd"  -- as a convention; stick to the prefix: `kong-plugin-`
-version = "0.3.0-1"
+version = "0.3.2-1"
 
 supported_platforms = {"linux", "macosx"}
 source = {
-  url = "git://github.com/Mashape/kong_plugin",
-  tag = "0.3.0"
+  url = "git://github.com/DanielTimLee/shepherd",
+  tag = "v0.3.2"
 }
 
 description = {
-  summary = "Kong is a scalable and customizable API Management Layer built on top of Nginx.",
-  homepage = "http://getkong.org",
-  license = "MIT"
+  summary = "Shephered is a plugin for Client Versioning and Redirect with API Endpoint, Modules.",
+  homepage = "http://github.com/DanielTimLee/shepherd",
+  license = "GPLv3"
 }
 
 dependencies = {}
