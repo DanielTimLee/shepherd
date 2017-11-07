@@ -20,10 +20,10 @@ return {
       -- TODO: [CRT] Block Same Client_ver, module entity
       local target_rule = self.POST
       local new_rule = {
-        client_version = target_rule['client_version'],
-        module_version = target_rule['module_version'],
-        endpoint = target_rule['endpoint'],
-        module = target_rule['module']
+        client_version = target_rule["client_version"],
+        module_version = target_rule["module_version"],
+        endpoint = target_rule["endpoint"],
+        module = target_rule["module"]
       }
 
       local res, err = dao_factory.shepherd:insert(new_rule)
@@ -41,7 +41,7 @@ return {
         ngx.log(ngx.ERR, "err in Updating Rule: ", err)
       end
 
-      return { json = { message = 'Success with update' } }
+      return { json = { message = "Success with update" } }
     end,
     DELETE = function(self, dao_factory) -- TODO: Validation Handle
       local target_rule = self.json
@@ -51,7 +51,7 @@ return {
         ngx.log(ngx.ERR, "err in Deleting Rule: ", err)
       end
 
-      return { json = { message = 'Success with delete' } }
+      return { json = { message = "Success with delete" } }
     end
   }
 }

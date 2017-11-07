@@ -1,11 +1,11 @@
 html = require "lapis.html"
 
--- TODO: [QST] don't know how to import CSS with Kong wrapped Lapis.
+-- TODO: [QST] don"t know how to import CSS with Kong wrapped Lapis.
 
-cdnICON = 'https://fonts.googleapis.com/icon?family=Material+Icons'
-cdnCSS = 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css'
-cdnJS = 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js'
-jqJS = 'https://code.jquery.com/jquery-3.2.1.min.js'
+cdnICON = "https://fonts.googleapis.com/icon?family=Material+Icons"
+cdnCSS = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
+cdnJS = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"
+jqJS = "https://code.jquery.com/jquery-3.2.1.min.js"
 
 class Layout extends html.Widget
   content: =>
@@ -48,7 +48,7 @@ class Layout extends html.Widget
               div class: "col l4 offset-l2 s12", ->
                 h5 class: "white-text", "Links"
                 ul ->
-                  li -> a class: "grey-text text-lighten-3", href: "dbrain.science", "dBrainScience Homepage"
+                  li -> a class: "grey-text text-lighten-3", href: "http://dbrain.science", "dBrainScience Homepage"
 
           div class: "footer-copyright", ->
             div class: "container", ->

@@ -1,6 +1,6 @@
 local Widget
 Widget = require("lapis.html").Widget
-local inp_css = 'validate no-mar-bot'
+local inp_css = "validate no-mar-bot"
 local Index
 do
   local _class_0
@@ -161,7 +161,7 @@ do
             return tbody(function()
               for key, value in pairs(self.rules) do
                 tr({
-                  ["data-id"] = self.rules[key]['id']
+                  ["data-id"] = self.rules[key]["id"]
                 }, function()
                   td(function()
                     return div({
@@ -171,7 +171,7 @@ do
                         input({
                           id = "toggle-rule",
                           type = "checkbox",
-                          checked = self.rules[key]['is_active']
+                          checked = self.rules[key]["is_active"]
                         })
                         return span({
                           class = "lever"
@@ -183,7 +183,7 @@ do
                     span({
                       id = "client_version",
                       class = "active-rule"
-                    }, self.rules[key]['client_version'], function() end)
+                    }, self.rules[key]["client_version"], function() end)
                     return div({
                       class = "modify-rule no-mar-top input-field"
                     }, function()
@@ -194,7 +194,7 @@ do
                         name = "client_version",
                         type = "text",
                         placeholder = "v1.0.1",
-                        value = self.rules[key]['client_version']
+                        value = self.rules[key]["client_version"]
                       })
                     end)
                   end)
@@ -202,7 +202,7 @@ do
                     span({
                       id = "endpoint",
                       class = "active-rule"
-                    }, self.rules[key]['endpoint'], function() end)
+                    }, self.rules[key]["endpoint"], function() end)
                     return div({
                       class = "modify-rule no-mar-top input-field"
                     }, function()
@@ -212,7 +212,7 @@ do
                         name = "endpoint",
                         type = "text",
                         placeholder = "/my-api/end",
-                        value = self.rules[key]['endpoint']
+                        value = self.rules[key]["endpoint"]
                       })
                     end)
                   end)
@@ -220,7 +220,7 @@ do
                     span({
                       id = "module",
                       class = "active-rule"
-                    }, self.rules[key]['module'], function() end)
+                    }, self.rules[key]["module"], function() end)
                     return div({
                       class = "modify-rule no-mar-top input-field"
                     }, function()
@@ -230,7 +230,7 @@ do
                         name = "module",
                         type = "text",
                         placeholder = "KE",
-                        value = self.rules[key]['module']
+                        value = self.rules[key]["module"]
                       })
                     end)
                   end)
@@ -238,7 +238,7 @@ do
                     span({
                       id = "module_version",
                       class = "active-rule"
-                    }, self.rules[key]['module_version'], function() end)
+                    }, self.rules[key]["module_version"], function() end)
                     return div({
                       class = "modify-rule no-mar-top input-field"
                     }, function()
@@ -249,7 +249,7 @@ do
                         name = "module_version",
                         type = "text",
                         placeholder = "v1",
-                        value = self.rules[key]['module_version']
+                        value = self.rules[key]["module_version"]
                       })
                     end)
                   end)
@@ -288,31 +288,31 @@ do
             end)
           end)
           return raw([[ <script>$(function() {
-          $('#client-version, #api-version').characterCounter();
-          $('#add-rule').on('click',function(){$('#new-rule').toggle();});
+          $("#client-version, #api-version").characterCounter();
+          $("#add-rule").on("click",function(){$("#new-rule").toggle();});
 
-          $('label #toggle-rule').on('click',function(){
-            ajaxReq('PUT', extractAttr($(this).parents('tr')));
+          $("label #toggle-rule").on("click",function(){
+            ajaxReq("PUT", extractAttr($(this).parents("tr")));
           });
 
-          $('.actions #modify-toggle').on('click',function(){
-            var parent = $(this).parents('tr')
-            parent.find('.modify-rule').toggle()
-            parent.find('.active-rule').toggle()
+          $(".actions #modify-toggle").on("click",function(){
+            var parent = $(this).parents("tr")
+            parent.find(".modify-rule").toggle()
+            parent.find(".active-rule").toggle()
           });
 
-          $('.modify-rule #modify-rule').on('click',function(){
-            var parent = $(this).parents('tr')
+          $(".modify-rule #modify-rule").on("click",function(){
+            var parent = $(this).parents("tr")
             pushInput(parent,"client_version")
             pushInput(parent,"endpoint")
             pushInput(parent,"module")
             pushInput(parent,"module_version")
 
-            ajaxReq('PUT', extractAttr($(this).parents('tr')));
+            ajaxReq("PUT", extractAttr($(this).parents("tr")));
           });
 
-          $('.actions #delete-rule').on('click',function(){
-            ajaxReq('DELETE', extractAttr($(this).parents('tr')));
+          $(".actions #delete-rule").on("click",function(){
+            ajaxReq("DELETE", extractAttr($(this).parents("tr")));
           });
 
           function pushInput(parent, target) {
@@ -323,21 +323,21 @@ do
             $.ajax({
               type: method,
               data: JSON.stringify(data),
-              dataType: 'json',
+              dataType: "json",
               success: callback,
-              success: function(res){alert(res['message']);location.reload();},
+              success: function(res){alert(res["message"]);location.reload();},
               contentType: "application/json; charset=UTF-8"
             });
           }
 
           function extractAttr(parent){
             return {
-              id: parent.attr('data-id'),
-              client_version: parent.find('#client_version').text(),
-              endpoint: parent.find('#endpoint').text(),
-              module: parent.find('#module').text(),
-              module_version: parent.find('#module_version').text(),
-              is_active: parent.find('#toggle-rule').prop('checked'),
+              id: parent.attr("data-id"),
+              client_version: parent.find("#client_version").text(),
+              endpoint: parent.find("#endpoint").text(),
+              module: parent.find("#module").text(),
+              module_version: parent.find("#module_version").text(),
+              is_active: parent.find("#toggle-rule").prop("checked"),
             }
           }
 

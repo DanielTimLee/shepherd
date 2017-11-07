@@ -1,10 +1,10 @@
-local pluginBase = 'kong.plugins.shepherd'
-local config = require(pluginBase .. '.misc.config')
+local pluginBase = "kong.plugins.shepherd"
+local config = require(pluginBase .. ".misc.config")
 
 local migrate = {}
 
 local function setTimer()
-  local ok, err = ngx.timer.at(config.entry['migration_delay'], migrate.proceed)
+  local ok, err = ngx.timer.at(config.entry["migration_delay"], migrate.proceed)
   if not ok then
     ngx.log(ngx.ERR, "failed to create the timer: ", err)
     -- TODO: Error Handling, If Fails? Must Fix! When Timer Create Fails?
