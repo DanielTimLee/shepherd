@@ -1,6 +1,6 @@
 html = require "lapis.html"
 
--- TODO: don't know how to import CSS with Kong wrapped Lapis.
+-- TODO: [QST] don't know how to import CSS with Kong wrapped Lapis.
 
 cdnICON = 'https://fonts.googleapis.com/icon?family=Material+Icons'
 cdnCSS = 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css'

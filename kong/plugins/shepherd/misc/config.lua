@@ -1,5 +1,4 @@
 local singletons = require "kong.singletons"
-local inspect = require('inspect')
 
 local config = {}
 config.entry = nil

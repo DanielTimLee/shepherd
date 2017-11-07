@@ -17,6 +17,7 @@ return {
       return { render = index, layout = layout, content_type = "text/html" }
     end,
     POST = function(self, dao_factory) -- TODO: Validation Handle
+      -- TODO: [CRT] Block Same Client_ver, module entity
       local target_rule = self.POST
       local new_rule = {
         client_version = target_rule['client_version'],
