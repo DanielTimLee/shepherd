@@ -115,10 +115,12 @@ do
                       disabled = true,
                       selected = true
                     }, "Choose Kong API")
-                    for key, api in pairs(self.apis) do
-                      option({
-                        value = api["uris"][1]
-                      }, api["name"] .. " ( " .. api["uris"][1] .. " ) ")
+                    if self.apis then
+                      for key, api in pairs(self.apis) do
+                        option({
+                          value = api["uris"][1]
+                        }, api["name"] .. " ( " .. api["uris"][1] .. " ) ")
+                      end
                     end
                   end)
                   return label({
@@ -165,139 +167,143 @@ do
               end)
             end)
             return tbody(function()
-              for key, rule in pairs(self.rules) do
-                tr({
-                  ["data-id"] = rule["id"]
-                }, function()
-                  td(function()
-                    return div({
-                      class = "switch"
-                    }, function()
-                      return label(function()
-                        input({
-                          id = "toggle-rule",
-                          type = "checkbox",
-                          checked = rule["is_active"]
-                        })
-                        return span({
-                          class = "lever"
+              if self.rules then
+                for key, rule in pairs(self.rules) do
+                  tr({
+                    ["data-id"] = rule["id"]
+                  }, function()
+                    td(function()
+                      return div({
+                        class = "switch"
+                      }, function()
+                        return label(function()
+                          input({
+                            id = "toggle-rule",
+                            type = "checkbox",
+                            checked = rule["is_active"]
+                          })
+                          return span({
+                            class = "lever"
+                          })
+                        end)
+                      end)
+                    end)
+                    td(function()
+                      span({
+                        id = "client_version",
+                        class = "active-rule"
+                      }, rule["client_version"], function() end)
+                      return div({
+                        class = "modify-rule no-mar-top input-field"
+                      }, function()
+                        return input({
+                          class = inp_css,
+                          required = true,
+                          ["data-length"] = "10",
+                          name = "client_version",
+                          type = "text",
+                          placeholder = "v1.0.1",
+                          value = rule["client_version"]
                         })
                       end)
                     end)
-                  end)
-                  td(function()
-                    span({
-                      id = "client_version",
-                      class = "active-rule"
-                    }, rule["client_version"], function() end)
-                    return div({
-                      class = "modify-rule no-mar-top input-field"
-                    }, function()
-                      return input({
-                        class = inp_css,
-                        required = true,
-                        ["data-length"] = "10",
-                        name = "client_version",
-                        type = "text",
-                        placeholder = "v1.0.1",
-                        value = rule["client_version"]
-                      })
-                    end)
-                  end)
-                  td(function()
-                    span({
-                      id = "endpoint",
-                      class = "active-rule"
-                    }, rule["endpoint"], function() end)
-                    return div({
-                      class = "modify-rule no-mar-top input-field"
-                    }, function()
-                      return input({
-                        class = inp_css,
-                        required = true,
-                        name = "endpoint",
-                        type = "text",
-                        placeholder = "/my-api/end",
-                        value = rule["endpoint"]
-                      })
-                    end)
-                  end)
-                  td(function()
-                    span({
-                      id = "module",
-                      class = "active-rule"
-                    }, rule["module"], function() end)
-                    return div({
-                      class = "modify-rule no-mar-top"
-                    }, function()
-                      return element("select", {
-                        class = 'browser-default',
-                        name = "module"
+                    td(function()
+                      span({
+                        id = "endpoint",
+                        class = "active-rule"
+                      }, rule["endpoint"], function() end)
+                      return div({
+                        class = "modify-rule no-mar-top input-field"
                       }, function()
-                        option({
-                          disabled = true
-                        }, "Choose Kong API")
-                        for key, api in pairs(self.apis) do
+                        return input({
+                          class = inp_css,
+                          required = true,
+                          name = "endpoint",
+                          type = "text",
+                          placeholder = "/my-api/end",
+                          value = rule["endpoint"]
+                        })
+                      end)
+                    end)
+                    td(function()
+                      span({
+                        id = "module",
+                        class = "active-rule"
+                      }, rule["module"], function() end)
+                      return div({
+                        class = "modify-rule no-mar-top"
+                      }, function()
+                        return element("select", {
+                          class = 'browser-default',
+                          name = "module"
+                        }, function()
                           option({
-                            value = api["uris"][1],
-                            selected = rule["module"] == api['uris'][1]
-                          }, function()
-                            return text(api["name"] .. " ( " .. api["uris"][1] .. " ) ")
-                          end)
-                        end
+                            disabled = true
+                          }, "Choose Kong API")
+                          if self.rules then
+                            for key, api in pairs(self.apis) do
+                              option({
+                                value = api["uris"][1],
+                                selected = rule["module"] == api['uris'][1]
+                              }, function()
+                                return text(api["name"] .. " ( " .. api["uris"][1] .. " ) ")
+                              end)
+                            end
+                          end
+                        end)
                       end)
                     end)
-                  end)
-                  td(function()
-                    span({
-                      id = "module_version",
-                      class = "active-rule"
-                    }, rule["module_version"], function() end)
-                    return div({
-                      class = "modify-rule no-mar-top input-field"
-                    }, function()
-                      return input({
-                        class = inp_css,
-                        required = true,
-                        ["data-length"] = "10",
-                        name = "module_version",
-                        type = "text",
-                        placeholder = "v1",
-                        value = rule["module_version"]
-                      })
-                    end)
-                  end)
-                  return td(function()
-                    div({
-                      class = "active-rule actions"
-                    }, function()
-                      button({
-                        class = "waves-effect waves-light cyan btn-floating",
-                        id = "modify-toggle"
+                    td(function()
+                      span({
+                        id = "module_version",
+                        class = "active-rule"
+                      }, rule["module_version"], function() end)
+                      return div({
+                        class = "modify-rule no-mar-top input-field"
                       }, function()
-                        return i({
-                          class = "material-icons"
-                        }, "edit")
-                      end)
-                      return button({
-                        class = "waves-effect waves-light orange btn-floating",
-                        id = "delete-rule"
-                      }, function()
-                        return i({
-                          class = "material-icons"
-                        }, "remove_circle")
+                        return input({
+                          class = inp_css,
+                          required = true,
+                          ["data-length"] = "10",
+                          name = "module_version",
+                          type = "text",
+                          placeholder = "v1",
+                          value = rule["module_version"]
+                        })
                       end)
                     end)
-                    return div({
-                      class = "modify-rule"
-                    }, function()
-                      return button({
-                        class = "btn waves-effect waves-light blue lighten-1",
-                        id = "modify-rule"
-                      }, "submit")
+                    return td(function()
+                      div({
+                        class = "active-rule actions"
+                      }, function()
+                        button({
+                          class = "waves-effect waves-light cyan btn-floating",
+                          id = "modify-toggle"
+                        }, function()
+                          return i({
+                            class = "material-icons"
+                          }, "edit")
+                        end)
+                        return button({
+                          class = "waves-effect waves-light orange btn-floating",
+                          id = "delete-rule"
+                        }, function()
+                          return i({
+                            class = "material-icons"
+                          }, "remove_circle")
+                        end)
+                      end)
+                      return div({
+                        class = "modify-rule"
+                      }, function()
+                        return button({
+                          class = "btn waves-effect waves-light blue lighten-1",
+                          id = "modify-rule"
+                        }, "submit")
+                      end)
                     end)
                   end)
-                end)
+                end
               end
             end)
           end)

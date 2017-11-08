@@ -36,8 +36,9 @@ class Index extends Widget
               div class: "input-field col s2", ->
                 element "select", name: "module", ->
                   option disabled: true, selected: true, "Choose Kong API"
-                  for key, api in pairs @apis
-                    option value: api["uris"][1], api["name"].." ( "..api["uris"][1].." ) "
+                  if @apis
+                    for key, api in pairs @apis
+                      option value: api["uris"][1], api["name"].." ( "..api["uris"][1].." ) "
                 label for: "module", "API Module"
               div class: "input-field col s2", ->
                 input class: inp_css, required: true, "data-length": "10", name: "module_version", type: "text", placeholder: "v1"
@@ -56,48 +57,50 @@ class Index extends Widget
               th "Action"
 
           tbody ->
-            for key, rule in pairs @rules
-              tr "data-id": rule["id"], ->
-                td ->
-                  div class: "switch", ->
-                    label ->
-                      input id: "toggle-rule", type: "checkbox", checked: rule["is_active"]
-                      span class: "lever"
+            if @rules
+              for key, rule in pairs @rules
+                tr "data-id": rule["id"], ->
+                  td ->
+                    div class: "switch", ->
+                      label ->
+                        input id: "toggle-rule", type: "checkbox", checked: rule["is_active"]
+                        span class: "lever"
 
-                td ->
-                  span id: "client_version", class: "active-rule", rule["client_version"], ->
-                  div class: "modify-rule no-mar-top input-field", ->
-                    input class: inp_css, required: true, "data-length": "10", name: "client_version", type: "text", placeholder: "v1.0.1", value: rule["client_version"]
+                  td ->
+                    span id: "client_version", class: "active-rule", rule["client_version"], ->
+                    div class: "modify-rule no-mar-top input-field", ->
+                      input class: inp_css, required: true, "data-length": "10", name: "client_version", type: "text", placeholder: "v1.0.1", value: rule["client_version"]
 
-                td ->
-                  span id: "endpoint", class: "active-rule", rule["endpoint"], ->
-                  div class: "modify-rule no-mar-top input-field", ->
-                    input class: inp_css, required: true, name: "endpoint", type: "text", placeholder: "/my-api/end", value: rule["endpoint"]
+                  td ->
+                    span id: "endpoint", class: "active-rule", rule["endpoint"], ->
+                    div class: "modify-rule no-mar-top input-field", ->
+                      input class: inp_css, required: true, name: "endpoint", type: "text", placeholder: "/my-api/end", value: rule["endpoint"]
 
-                td ->
-                  span id: "module", class: "active-rule", rule["module"], ->
+                  td ->
+                    span id: "module", class: "active-rule", rule["module"], ->
 
-                  div class: "modify-rule no-mar-top", ->
-                    element "select", class: 'browser-default', name: "module", ->
-                      option disabled: true, "Choose Kong API"
-                      for key, api in pairs @apis
-                        option value: api["uris"][1], selected: rule["module"] == api['uris'][1], ->
-                          text api["name"].." ( "..api["uris"][1].." ) "
+                    div class: "modify-rule no-mar-top", ->
+                      element "select", class: 'browser-default', name: "module", ->
+                        option disabled: true, "Choose Kong API"
+                        if @rules
+                          for key, api in pairs @apis
+                            option value: api["uris"][1], selected: rule["module"] == api['uris'][1], ->
+                              text api["name"].." ( "..api["uris"][1].." ) "
 
-                td ->
-                  span id: "module_version", class: "active-rule", rule["module_version"], ->
-                  div class: "modify-rule no-mar-top input-field", ->
-                    input class: inp_css, required: true, "data-length": "10", name: "module_version", type: "text", placeholder: "v1", value: rule["module_version"]
+                  td ->
+                    span id: "module_version", class: "active-rule", rule["module_version"], ->
+                    div class: "modify-rule no-mar-top input-field", ->
+                      input class: inp_css, required: true, "data-length": "10", name: "module_version", type: "text", placeholder: "v1", value: rule["module_version"]
 
-                td ->
-                  div class: "active-rule actions", ->
-                    button class: "waves-effect waves-light cyan btn-floating", id: "modify-toggle", ->
-                      i class: "material-icons", "edit"
-                    button class: "waves-effect waves-light orange btn-floating", id: "delete-rule", ->
-                      i class: "material-icons", "remove_circle"
+                  td ->
+                    div class: "active-rule actions", ->
+                      button class: "waves-effect waves-light cyan btn-floating", id: "modify-toggle", ->
+                        i class: "material-icons", "edit"
+                      button class: "waves-effect waves-light orange btn-floating", id: "delete-rule", ->
+                        i class: "material-icons", "remove_circle"
 
-                  div class: "modify-rule", ->
-                    button class:"btn waves-effect waves-light blue lighten-1", id: "modify-rule", "submit"
+                    div class: "modify-rule", ->
+                      button class:"btn waves-effect waves-light blue lighten-1", id: "modify-rule", "submit"
 
 
 

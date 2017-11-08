@@ -1,10 +1,10 @@
 package = "kong-plugin-shepherd"  -- as a convention; stick to the prefix: `kong-plugin-`
-version = "0.4.0-1"
+version = "0.4.1-1"
 
 supported_platforms = {"linux", "macosx"}
 source = {
   url = "git://github.com/DanielTimLee/shepherd",
-  tag = "v0.4.0"
+  tag = "v0.4.1"
 }
 
 description = {
