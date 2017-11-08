@@ -11,6 +11,20 @@ return {
       if config.status() == false then
         self.message = "Plugin Status Unknown. Please Check Plugin Status."
       else
+        -- Fetch Existing APIs
+        local apis, err = dao_factory.daos.apis:find_all()
+        if err then
+          ngx.log(ngx.ERR, "err in Fetching Apis: ", err)
+        end
+
+        self.apis = apis
+        self.apis_len = table.getn(self.apis)
+
+        if self.apis_len == 0 then
+          self.message = "No APIs Found. Before start, Create APIs."
+        end
+
+        -- Fetch Existing Shepherd Rules
         local rules, err = dao_factory.daos.shepherd:find_all()
         if err then
           ngx.log(ngx.ERR, "err in Fetching Rule: ", err)

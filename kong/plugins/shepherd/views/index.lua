@@ -108,13 +108,19 @@ do
                 div({
                   class = "input-field col s2"
                 }, function()
-                  input({
-                    class = inp_css,
-                    required = true,
-                    name = "module",
-                    type = "text",
-                    placeholder = "KE"
-                  })
+                  element("select", {
+                    name = "module"
+                  }, function()
+                    option({
+                      disabled = true,
+                      selected = true
+                    }, "Choose Kong API")
+                    for key, api in pairs(self.apis) do
+                      option({
+                        value = api["uris"][1]
+                      }, api["name"] .. " ( " .. api["uris"][1] .. " ) ")
+                    end
+                  end)
                   return label({
                     ["for"] = "module"
                   }, "API Module")
@@ -159,9 +165,9 @@ do
               end)
             end)
             return tbody(function()
-              for key, value in pairs(self.rules) do
+              for key, rule in pairs(self.rules) do
                 tr({
-                  ["data-id"] = self.rules[key]["id"]
+                  ["data-id"] = rule["id"]
                 }, function()
                   td(function()
                     return div({
@@ -171,7 +177,7 @@ do
                         input({
                           id = "toggle-rule",
                           type = "checkbox",
-                          checked = self.rules[key]["is_active"]
+                          checked = rule["is_active"]
                         })
                         return span({
                           class = "lever"
@@ -183,7 +189,7 @@ do
                     span({
                       id = "client_version",
                       class = "active-rule"
-                    }, self.rules[key]["client_version"], function() end)
+                    }, rule["client_version"], function() end)
                     return div({
                       class = "modify-rule no-mar-top input-field"
                     }, function()
@@ -194,7 +200,7 @@ do
                         name = "client_version",
                         type = "text",
                         placeholder = "v1.0.1",
-                        value = self.rules[key]["client_version"]
+                        value = rule["client_version"]
                       })
                     end)
                   end)
@@ -202,7 +208,7 @@ do
                     span({
                       id = "endpoint",
                       class = "active-rule"
-                    }, self.rules[key]["endpoint"], function() end)
+                    }, rule["endpoint"], function() end)
                     return div({
                       class = "modify-rule no-mar-top input-field"
                     }, function()
@@ -212,7 +218,7 @@ do
                         name = "endpoint",
                         type = "text",
                         placeholder = "/my-api/end",
-                        value = self.rules[key]["endpoint"]
+                        value = rule["endpoint"]
                       })
                     end)
                   end)
@@ -220,25 +226,33 @@ do
                     span({
                       id = "module",
                       class = "active-rule"
-                    }, self.rules[key]["module"], function() end)
+                    }, rule["module"], function() end)
                     return div({
-                      class = "modify-rule no-mar-top input-field"
+                      class = "modify-rule no-mar-top"
                     }, function()
-                      return input({
-                        class = inp_css,
-                        required = true,
-                        name = "module",
-                        type = "text",
-                        placeholder = "KE",
-                        value = self.rules[key]["module"]
-                      })
+                      return element("select", {
+                        class = 'browser-default',
+                        name = "module"
+                      }, function()
+                        option({
+                          disabled = true
+                        }, "Choose Kong API")
+                        for key, api in pairs(self.apis) do
+                          option({
+                            value = api["uris"][1],
+                            selected = rule["module"] == api['uris'][1]
+                          }, function()
+                            return text(api["name"] .. " ( " .. api["uris"][1] .. " ) ")
+                          end)
+                        end
+                      end)
                     end)
                   end)
                   td(function()
                     span({
                       id = "module_version",
                       class = "active-rule"
-                    }, self.rules[key]["module_version"], function() end)
+                    }, rule["module_version"], function() end)
                     return div({
                       class = "modify-rule no-mar-top input-field"
                     }, function()
@@ -249,7 +263,7 @@ do
                         name = "module_version",
                         type = "text",
                         placeholder = "v1",
-                        value = self.rules[key]["module_version"]
+                        value = rule["module_version"]
                       })
                     end)
                   end)
@@ -287,61 +301,68 @@ do
               end
             end)
           end)
-          return raw([[ <script>$(function() {
-          $("#client-version, #api-version").characterCounter();
-          $("#add-rule").on("click",function(){$("#new-rule").toggle();});
-
-          $("label #toggle-rule").on("click",function(){
-            ajaxReq("PUT", extractAttr($(this).parents("tr")));
-          });
-
-          $(".actions #modify-toggle").on("click",function(){
-            var parent = $(this).parents("tr")
-            parent.find(".modify-rule").toggle()
-            parent.find(".active-rule").toggle()
-          });
-
-          $(".modify-rule #modify-rule").on("click",function(){
-            var parent = $(this).parents("tr")
-            pushInput(parent,"client_version")
-            pushInput(parent,"endpoint")
-            pushInput(parent,"module")
-            pushInput(parent,"module_version")
-
-            ajaxReq("PUT", extractAttr($(this).parents("tr")));
-          });
-
-          $(".actions #delete-rule").on("click",function(){
-            ajaxReq("DELETE", extractAttr($(this).parents("tr")));
-          });
-
-          function pushInput(parent, target) {
-            parent.find("#"+target).text(parent.find("input[name="+target+"]").val());
-          }
-
-          function ajaxReq(method, data, callback) {
-            $.ajax({
-              type: method,
-              data: JSON.stringify(data),
-              dataType: "json",
-              success: callback,
-              success: function(res){alert(res["message"]);location.reload();},
-              contentType: "application/json; charset=UTF-8"
+          return raw([[ <script>
+          $(function () {
+            $("#client-version, #api-version").characterCounter();
+            $("#add-rule").on("click", function () {
+              var newRule = $("#new-rule")
+              newRule.toggle();
+              newRule.find('select').material_select();
             });
-          }
 
-          function extractAttr(parent){
-            return {
-              id: parent.attr("data-id"),
-              client_version: parent.find("#client_version").text(),
-              endpoint: parent.find("#endpoint").text(),
-              module: parent.find("#module").text(),
-              module_version: parent.find("#module_version").text(),
-              is_active: parent.find("#toggle-rule").prop("checked"),
+            $("label #toggle-rule").on("click", function () {
+              ajaxReq("PUT", extractAttr($(this).parents("tr")));
+            });
+
+            $(".actions #modify-toggle").on("click", function () {
+              var parent = $(this).parents("tr")
+              parent.find(".modify-rule").toggle()
+              parent.find(".active-rule").toggle()
+            });
+
+            $(".modify-rule #modify-rule").on("click", function () {
+              var parent = $(this).parents("tr")
+              pushInput(parent, "input", "client_version")
+              pushInput(parent, "input", "endpoint")
+              pushInput(parent, "select", "module")
+              pushInput(parent, "input", "module_version")
+
+              ajaxReq("PUT", extractAttr($(this).parents("tr")));
+            });
+
+            $(".actions #delete-rule").on("click", function () {
+              ajaxReq("DELETE", extractAttr($(this).parents("tr")));
+            });
+
+            function pushInput(parent, type, target) {
+              parent.find("#" + target).text(parent.find(type + "[name=" + target + "]").val());
             }
-          }
 
-        });</script> ]])
+            function ajaxReq(method, data, callback) {
+              $.ajax({
+                type: method,
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: callback,
+                success: function (res) {
+                  alert(res["message"]);
+                  location.reload();
+                },
+                contentType: "application/json; charset=UTF-8"
+              });
+            }
+
+            function extractAttr(parent) {
+              return {
+                id: parent.attr("data-id"),
+                client_version: parent.find("#client_version").text(),
+                endpoint: parent.find("#endpoint").text(),
+                module: parent.find("#module").text(),
+                module_version: parent.find("#module_version").text(),
+                is_active: parent.find("#toggle-rule").prop("checked"),
+              }
+            }
+          });</script> ]])
         end)
       end)
     end
