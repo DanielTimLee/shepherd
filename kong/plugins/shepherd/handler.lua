@@ -27,27 +27,41 @@ local function navigate_error(message)
 end
 
 
+local redirect_true = '1';
+
 local function navigate()
   -- do not call dao before Init worker. Context can"t search dao.
   local dao = require("kong.singletons").dao.shepherd
   local req_header = ngx.req.get_headers()
+  local base_args = ngx.req.get_uri_args()
 
-  if req_header["client_version"] then
-    local query = { client_version = req_header["client_version"], endpoint = ngx.var.uri } -- without param
+  if base_args.redirect == nil then
+    if req_header["client_version"] ~= nil then
+      local query = { client_version = req_header["client_version"], endpoint = ngx.var.uri }
 
-    local rules, err = dao:find_all(query)
-    if err then
-      ngx.log(ngx.ERR, "err in Fetching Rule: ", err)
+      local rules, err = dao:find_all(query)
+      if err then
+        ngx.log(ngx.ERR, "err in Fetching Rule: ", err)
+      end
+
+      if table.getn(rules) ~= 0 then
+        base_args.redirect = redirect_true;
+        ngx.req.set_uri_args(base_args)
+
+        local base_url = ngx.var.uri .. ngx.var.is_args .. ngx.var.query_string
+        local redirect_url = rules[1]["module"] .. "/" .. rules[1]["module_version"] .. base_url
+
+        ngx.log(ngx.ERR, redirect_url) -- log
+        ngx.redirect(redirect_url)
+      else
+        navigate_error("No match rules found. Please Check your Rule registered status.")
+      end
+      --else  navigate_error() -- Uncomment If want to block all the direct API request
     end
-
-    if table.getn(rules) ~= 0 then
-      local redirect_url = rules[1]["module"] .. "/" .. rules[1]["module_version"] .. ngx.var.request_uri -- with param
-      ngx.log(ngx.ERR, redirect_url) -- log
-      ngx.redirect(redirect_url)
-    else
-      navigate_error("No match rules found. Please Check your Rule registered status.")
-    end
-    --else  navigate_error() -- Uncomment If want to block all the direct API request
+  else if base_args.redirect == redirect_true then
+    base_args.redirect = nil
+    ngx.req.set_uri_args(base_args)
+  end
   end
 end
 
