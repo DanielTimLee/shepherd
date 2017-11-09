@@ -70,7 +70,7 @@ do
                       class = "container"
                     }, function()
                       return div({
-                        class = "blue lighten-5 card-panel"
+                        class = "blue lighten-5 card-panel pulse"
                       }, function()
                         return div({
                           class = "card-content"

@@ -36,7 +36,7 @@ class Layout extends html.Widget
               if @message
                 div class: "row center", ->
                   div class: "container", ->
-                    div class: "blue lighten-5 card-panel", ->
+                    div class: "blue lighten-5 card-panel pulse", ->
                       div class: "card-content", ->
                         h5 @message
 
