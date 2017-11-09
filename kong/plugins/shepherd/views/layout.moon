@@ -13,7 +13,7 @@ class Layout extends html.Widget
       head ->
         script src: jqJS
         script src: cdnJS
-        title "Shepherd Dashboard"
+        title "🐑 Shepherd Dashboard"
         link rel: "stylesheet", href: cdnCSS
         link rel: "stylesheet", href: cdnICON
 
@@ -29,14 +29,14 @@ class Layout extends html.Widget
         main ->
           div class: "section no-pad-bot", ->
             div class: "container", ->
-              h1 class: "header center light-blue-text text-lighten-1", "Shepherd"
+              h1 class: "header center light-blue-text text-lighten-1", "🐑 Shepherd"
               div class: "row center", ->
                 h5 class: "header col s12 light", "Client Versioning Redirect with API Endpoint, Modules"
 
               if @message
                 div class: "row center", ->
                   div class: "container", ->
-                    div class: "blue lighten-5 card-panel", ->
+                    div class: "blue lighten-5 card-panel pulse", ->
                       div class: "card-content", ->
                         h5 @message
 
