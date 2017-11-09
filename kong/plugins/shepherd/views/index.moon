@@ -15,36 +15,37 @@ class Index extends Widget
         #new-rule{display:none}.modify-rule{display:none}
         </style> ]]
 
-        div id: "act-btn-box", ->
-          div class: "fixed-action-btn horizontal click-to-toggle", id: "act-btn", ->
-            a class: "btn-floating btn-large pulse red", ->
-              i class: "large material-icons", "menu"
-            ul ->
-              li -> a class: "btn-floating blue", id: "add-rule", -> i class: "material-icons", "add"
-              li -> a class: "btn-floating green", -> i class: "material-icons", "edit"
-              li -> a class: "btn-floating yellow darken-1", -> i class: "material-icons", "search"
+        if @apis
+          div id: "act-btn-box", ->
+            div class: "fixed-action-btn horizontal click-to-toggle", id: "act-btn", ->
+              a class: "btn-floating btn-large pulse red", ->
+                i class: "large material-icons", "menu"
+              ul ->
+                li -> a class: "btn-floating blue", id: "add-rule", -> i class: "material-icons", "add"
+                li -> a class: "btn-floating green", -> i class: "material-icons", "edit"
+                li -> a class: "btn-floating yellow darken-1", -> i class: "material-icons", "search"
 
-        div class: "row no-mar", id: "new-rule", ->
-          form class: "col s12", method: "POST",  ->
-            div class: "row", ->
-              div class: "input-field col s3", ->
-                input class: inp_css, required: true, "data-length": "10", name: "client_version", type: "text", placeholder: "v1.0.1"
-                label for: "client_version", "Client Version"
-              div class: "input-field col s3", ->
-                input class: inp_css, required: true, name: "endpoint", type: "text", placeholder: "/my-api/end"
-                label for: "endpoint", "API Endpoint"
-              div class: "input-field col s2", ->
-                element "select", name: "module", ->
-                  option disabled: true, selected: true, "Choose Kong API"
-                  if @apis
-                    for key, api in pairs @apis
-                      option value: api["uris"][1], api["name"].." ( "..api["uris"][1].." ) "
-                label for: "module", "API Module"
-              div class: "input-field col s2", ->
-                input class: inp_css, required: true, "data-length": "10", name: "module_version", type: "text", placeholder: "v1"
-                label for: "module_version", "Module Version"
-              div class: "input-field col s2", ->
-                button class:"btn waves-effect waves-light full-size-hor", type: "submit", "submit"
+          div class: "row no-mar", id: "new-rule", ->
+            form class: "col s12", method: "POST",  ->
+              div class: "row", ->
+                div class: "input-field col s3", ->
+                  input class: inp_css, required: true, "data-length": "10", name: "client_version", type: "text", placeholder: "v1.0.1"
+                  label for: "client_version", "Client Version"
+                div class: "input-field col s3", ->
+                  input class: inp_css, required: true, name: "endpoint", type: "text", placeholder: "/my-api/end"
+                  label for: "endpoint", "API Endpoint"
+                div class: "input-field col s2", ->
+                  element "select", name: "module", ->
+                    option disabled: true, selected: true, "Choose Kong API"
+                    if @apis
+                      for key, api in pairs @apis
+                        option value: api["uris"][1], api["name"].." ( "..api["uris"][1].." ) "
+                  label for: "module", "API Module"
+                div class: "input-field col s2", ->
+                  input class: inp_css, required: true, "data-length": "10", name: "module_version", type: "text", placeholder: "v1"
+                  label for: "module_version", "Module Version"
+                div class: "input-field col s2", ->
+                  button class:"btn waves-effect waves-light full-size-hor", type: "submit", "submit"
 
         element "table", class: "striped centered highlight", ->
           thead ->
