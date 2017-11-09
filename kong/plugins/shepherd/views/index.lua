@@ -19,140 +19,142 @@ do
         #act-btn-box{position:relative;height:5rem}#act-btn{position:absolute;display:inline-block;right:2rem}
         #new-rule{display:none}.modify-rule{display:none}
         </style> ]])
-          div({
-            id = "act-btn-box"
-          }, function()
-            return div({
-              class = "fixed-action-btn horizontal click-to-toggle",
-              id = "act-btn"
-            }, function()
-              a({
-                class = "btn-floating btn-large pulse red"
-              }, function()
-                return i({
-                  class = "large material-icons"
-                }, "menu")
-              end)
-              return ul(function()
-                li(function()
-                  return a({
-                    class = "btn-floating blue",
-                    id = "add-rule"
-                  }, function()
-                    return i({
-                      class = "material-icons"
-                    }, "add")
-                  end)
-                end)
-                li(function()
-                  return a({
-                    class = "btn-floating green"
-                  }, function()
-                    return i({
-                      class = "material-icons"
-                    }, "edit")
-                  end)
-                end)
-                return li(function()
-                  return a({
-                    class = "btn-floating yellow darken-1"
-                  }, function()
-                    return i({
-                      class = "material-icons"
-                    }, "search")
-                  end)
-                end)
-              end)
-            end)
-          end)
-          div({
-            class = "row no-mar",
-            id = "new-rule"
-          }, function()
-            return form({
-              class = "col s12",
-              method = "POST"
+          if self.apis then
+            div({
+              id = "act-btn-box"
             }, function()
               return div({
-                class = "row"
+                class = "fixed-action-btn horizontal click-to-toggle",
+                id = "act-btn"
               }, function()
-                div({
-                  class = "input-field col s3"
+                a({
+                  class = "btn-floating btn-large pulse red"
                 }, function()
-                  input({
-                    class = inp_css,
-                    required = true,
-                    ["data-length"] = "10",
-                    name = "client_version",
-                    type = "text",
-                    placeholder = "v1.0.1"
-                  })
-                  return label({
-                    ["for"] = "client_version"
-                  }, "Client Version")
+                  return i({
+                    class = "large material-icons"
+                  }, "menu")
                 end)
-                div({
-                  class = "input-field col s3"
-                }, function()
-                  input({
-                    class = inp_css,
-                    required = true,
-                    name = "endpoint",
-                    type = "text",
-                    placeholder = "/my-api/end"
-                  })
-                  return label({
-                    ["for"] = "endpoint"
-                  }, "API Endpoint")
-                end)
-                div({
-                  class = "input-field col s2"
-                }, function()
-                  element("select", {
-                    name = "module"
-                  }, function()
-                    option({
-                      disabled = true,
-                      selected = true
-                    }, "Choose Kong API")
-                    if self.apis then
-                      for key, api in pairs(self.apis) do
-                        option({
-                          value = api["uris"][1]
-                        }, api["name"] .. " ( " .. api["uris"][1] .. " ) ")
-                      end
-                    end
+                return ul(function()
+                  li(function()
+                    return a({
+                      class = "btn-floating blue",
+                      id = "add-rule"
+                    }, function()
+                      return i({
+                        class = "material-icons"
+                      }, "add")
+                    end)
                   end)
-                  return label({
-                    ["for"] = "module"
-                  }, "API Module")
-                end)
-                div({
-                  class = "input-field col s2"
-                }, function()
-                  input({
-                    class = inp_css,
-                    required = true,
-                    ["data-length"] = "10",
-                    name = "module_version",
-                    type = "text",
-                    placeholder = "v1"
-                  })
-                  return label({
-                    ["for"] = "module_version"
-                  }, "Module Version")
-                end)
-                return div({
-                  class = "input-field col s2"
-                }, function()
-                  return button({
-                    class = "btn waves-effect waves-light full-size-hor",
-                    type = "submit"
-                  }, "submit")
+                  li(function()
+                    return a({
+                      class = "btn-floating green"
+                    }, function()
+                      return i({
+                        class = "material-icons"
+                      }, "edit")
+                    end)
+                  end)
+                  return li(function()
+                    return a({
+                      class = "btn-floating yellow darken-1"
+                    }, function()
+                      return i({
+                        class = "material-icons"
+                      }, "search")
+                    end)
+                  end)
                 end)
               end)
             end)
-          end)
+            div({
+              class = "row no-mar",
+              id = "new-rule"
+            }, function()
+              return form({
+                class = "col s12",
+                method = "POST"
+              }, function()
+                return div({
+                  class = "row"
+                }, function()
+                  div({
+                    class = "input-field col s3"
+                  }, function()
+                    input({
+                      class = inp_css,
+                      required = true,
+                      ["data-length"] = "10",
+                      name = "client_version",
+                      type = "text",
+                      placeholder = "v1.0.1"
+                    })
+                    return label({
+                      ["for"] = "client_version"
+                    }, "Client Version")
+                  end)
+                  div({
+                    class = "input-field col s3"
+                  }, function()
+                    input({
+                      class = inp_css,
+                      required = true,
+                      name = "endpoint",
+                      type = "text",
+                      placeholder = "/my-api/end"
+                    })
+                    return label({
+                      ["for"] = "endpoint"
+                    }, "API Endpoint")
+                  end)
+                  div({
+                    class = "input-field col s2"
+                  }, function()
+                    element("select", {
+                      name = "module"
+                    }, function()
+                      option({
+                        disabled = true,
+                        selected = true
+                      }, "Choose Kong API")
+                      if self.apis then
+                        for key, api in pairs(self.apis) do
+                          option({
+                            value = api["uris"][1]
+                          }, api["name"] .. " ( " .. api["uris"][1] .. " ) ")
+                        end
+                      end
+                    end)
+                    return label({
+                      ["for"] = "module"
+                    }, "API Module")
+                  end)
+                  div({
+                    class = "input-field col s2"
+                  }, function()
+                    input({
+                      class = inp_css,
+                      required = true,
+                      ["data-length"] = "10",
+                      name = "module_version",
+                      type = "text",
+                      placeholder = "v1"
+                    })
+                    return label({
+                      ["for"] = "module_version"
+                    }, "Module Version")
+                  end)
+                  return div({
+                    class = "input-field col s2"
+                  }, function()
+                    return button({
+                      class = "btn waves-effect waves-light full-size-hor",
+                      type = "submit"
+                    }, "submit")
+                  end)
+                end)
+              end)
+            end)
+          end
           element("table", {
             class = "striped centered highlight"
           }, function()
