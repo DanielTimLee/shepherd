@@ -26,6 +26,23 @@ local function navigate_error(message)
   ngx.say(cJson.encode { message = message })
 end
 
+--[[ Following Plugin's Use-case will be like below.
++----------+------------+---------+
+| redirect | client_ver | results |
++----------+------------+---------+
+|          |      O     | Convert |
++   None   +------------+---------+
+|          |      X     |  Bypass |
++----------+------------+---------+
+|          |      O     | Convert |
++     1    +------------+---------+
+|          |      X     |  Bypass |
++----------+------------+---------+
+|          |      O     |  Bypass |
++   NOT 1  +------------+---------+
+|          |      X     |  Bypass |
++----------+------------+---------+
+]] --
 
 local redirect_true = '1';
 
@@ -52,17 +69,18 @@ local function navigate()
         local redirect_url = rules[1]["module"] .. "/" .. rules[1]["module_version"] .. base_url
 
         ngx.log(ngx.ERR, redirect_url) -- log
-        ngx.redirect(redirect_url)
+        ngx.redirect(redirect_url, ngx.HTTP_TEMPORARY_REDIRECT) -- must be 307 to use same method.
       else
         navigate_error("No match rules found. Please Check your Rule registered status.")
       end
+
       --else  navigate_error() -- Uncomment If want to block all the direct API request
     end
-  else if base_args.redirect == redirect_true then
+  elseif base_args.redirect == redirect_true then
     base_args.redirect = nil
     ngx.req.set_uri_args(base_args)
   end
-  end
+  -- redirect with any other argument than '1' will bypass plugin.
 end
 
 
