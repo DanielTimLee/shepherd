@@ -29,7 +29,7 @@ class Index extends Widget
             form class: "col s12", method: "POST",  ->
               div class: "row", ->
                 div class: "input-field col s3", ->
-                  input class: inp_css, required: true, "data-length": "10", name: "client_version", type: "text", placeholder: "v1.0.1"
+                  input class: inp_css, required: true, "data-length": "20", name: "client_version", type: "text", placeholder: "v1.0.1"
                   label for: "client_version", "Client Version"
                 div class: "input-field col s3", ->
                   input class: inp_css, required: true, name: "endpoint", type: "text", placeholder: "/my-api/end"

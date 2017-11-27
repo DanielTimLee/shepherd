@@ -18,14 +18,6 @@ function shepherd:init_worker()
   migrate:execute()
 end
 
-
--- JSON Return with ngx_lua_api : http://blog.zot24.com/return-json-responses-when-using-openresty-lua/
-local function navigate_error(message)
-  ngx.status = ngx.HTTP_OK
-  ngx.header.content_type = "application/json; charset=utf-8"
-  ngx.say(cJson.encode { message = message })
-end
-
 --[[ Following Plugin's Use-case will be like below.
 +----------+------------+---------+
 | redirect | client_ver | results |
@@ -43,6 +35,13 @@ end
 |          |      X     |  Bypass |
 +----------+------------+---------+
 ]] --
+
+-- JSON Return with ngx_lua_api : http://blog.zot24.com/return-json-responses-when-using-openresty-lua/
+local function navigate_error(message)
+  ngx.status = ngx.HTTP_NOT_FOUND
+  ngx.header.content_type = "application/json; charset=utf-8"
+  ngx.say(cJson.encode { message = message })
+end
 
 local redirect_true = '1';
 
@@ -94,7 +93,7 @@ end
 
 
 -- For Priority Upper than Req/Resp-Transformer
-shepherd.PRIORITY = 8500
+shepherd.PRIORITY = 850
 shepherd.VERSION = "0.1.0"
 
 return shepherd

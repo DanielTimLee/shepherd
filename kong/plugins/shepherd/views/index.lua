@@ -83,7 +83,7 @@ do
                     input({
                       class = inp_css,
                       required = true,
-                      ["data-length"] = "10",
+                      ["data-length"] = "20",
                       name = "client_version",
                       type = "text",
                       placeholder = "v1.0.1"
