@@ -43,7 +43,9 @@ local function navigate_error(message)
   ngx.say(cJson.encode { message = message })
 end
 
-local redirect_true = '1';
+-- https://serverfault.com/q/855720
+local CLIENT_VERSION = 'client-version';
+local REDIRECT_TRUE = '1';
 
 local function navigate()
   -- do not call dao before Init worker. Context can"t search dao.
@@ -52,8 +54,8 @@ local function navigate()
   local base_args = ngx.req.get_uri_args()
 
   if base_args.redirect == nil then
-    if req_header["client_version"] ~= nil then
-      local query = { client_version = req_header["client_version"], endpoint = ngx.var.uri }
+    if req_header[CLIENT_VERSION] ~= nil then
+      local query = { client_version = req_header[CLIENT_VERSION], endpoint = ngx.var.uri }
 
       local rules, err = dao:find_all(query)
       if err then
@@ -61,7 +63,7 @@ local function navigate()
       end
 
       if table.getn(rules) ~= 0 then
-        base_args.redirect = redirect_true;
+        base_args.redirect = REDIRECT_TRUE;
         ngx.req.set_uri_args(base_args)
 
         local base_url = ngx.var.uri .. ngx.var.is_args .. ngx.var.query_string
@@ -75,7 +77,7 @@ local function navigate()
 
       --else  navigate_error() -- Uncomment If want to block all the direct API request
     end
-  elseif base_args.redirect == redirect_true then
+  elseif base_args.redirect == REDIRECT_TRUE then
     base_args.redirect = nil
     ngx.req.set_uri_args(base_args)
   end
@@ -94,6 +96,6 @@ end
 
 -- For Priority Upper than Req/Resp-Transformer
 shepherd.PRIORITY = 850
-shepherd.VERSION = "0.1.0"
+shepherd.VERSION = "0.5.0"
 
 return shepherd

@@ -1,5 +1,7 @@
 # 🐑 Shepherd
 
+Request Collapsing, Request Batching.
+
 ##### Introduction 
 
 Shephered is a kong plugin for Client Versioning and Redirect with API Endpoint, Modules.
